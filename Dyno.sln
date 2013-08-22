@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Web Developer Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynoWeb", "Dyno\DynoWeb.csproj", "{68C03727-BFD5-400C-A3DB-B8B09075BDB4}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynoWeb", "DynoWeb\DynoWeb.csproj", "{68C03727-BFD5-400C-A3DB-B8B09075BDB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyno", "Dyno\Dyno.csproj", "{0419D545-2904-44A7-A008-D0B8E221107A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{68C03727-BFD5-400C-A3DB-B8B09075BDB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C03727-BFD5-400C-A3DB-B8B09075BDB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C03727-BFD5-400C-A3DB-B8B09075BDB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0419D545-2904-44A7-A008-D0B8E221107A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0419D545-2904-44A7-A008-D0B8E221107A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0419D545-2904-44A7-A008-D0B8E221107A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0419D545-2904-44A7-A008-D0B8E221107A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
