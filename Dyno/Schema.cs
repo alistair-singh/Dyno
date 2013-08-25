@@ -44,7 +44,7 @@ namespace Dyno
 
       for (int loop = 0; loop < info.ArgumentCount; loop++)
       {
-        parameters.Add(string.Format("@{0}", info.ArgumentNames[loop]), args[loop]);
+        parameters.Add(string.Format("@{0}", info.ArgumentNames[loop]), args[loop] ?? DBNull.Value);
       }
       return parameters;
     }

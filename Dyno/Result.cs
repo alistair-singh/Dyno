@@ -1,13 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Dyno
 {
   public sealed class Result : IResult
   {
-    private readonly StoredProcedureExecutor _executor;
+    private readonly ExecutorBase _executor;
 
-    internal Result(StoredProcedureExecutor executor)
+    internal Result(ExecutorBase executor)
     {
       _executor = executor;
     }

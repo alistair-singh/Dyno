@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Data.SqlClient;
 using System.Data;
@@ -32,12 +33,19 @@ namespace DynoWeb.Controllers
       {
         var spe = db["dbo"]["GetPerson"](ID: 1);
 
-        DataSet dset = spe;
-        Result res = spe;
+        //IQueryable<Person> peopleTable = new EnumerableQuery<Person>(new Person[0]);
+        //db((from p in peopleTable
+        //    where p.Id == 1
+        //    select p.LastName).Expression);
 
-        foreach (var person in res.SelectMany(set => set, (set, row) => row.Map<Person>()))
+        var query = db("SELECT * FROM Person");
+        Set res = query();
+
+        foreach (var person in res.Select(row => row.Map<Person>()))
         {
+
         }
+
       }
     }
 

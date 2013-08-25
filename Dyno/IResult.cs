@@ -2,7 +2,7 @@
 
 namespace Dyno
 {
-  public interface IResult : IEnumerable<Set> 
+  public interface IResult : IEnumerable<Set>
   { 
   }
 }

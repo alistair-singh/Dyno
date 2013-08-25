@@ -8,10 +8,12 @@ namespace Dyno
   public sealed class RowEnumerator : IEnumerator<IRow>
   {
     private readonly SqlDataReader _reader;
+    private readonly bool _dispose;
 
-    public RowEnumerator(SqlDataReader reader)
+    public RowEnumerator(SqlDataReader reader, bool dispose = false)
     {
       _reader = reader;
+      _dispose = dispose;
     }
 
     public IRow Current
@@ -21,6 +23,8 @@ namespace Dyno
 
     public void Dispose()
     {
+      if (_dispose)
+        _reader.Dispose();
     }
 
     object IEnumerator.Current
@@ -37,5 +41,6 @@ namespace Dyno
     {
       throw new NotImplementedException();
     }
+
   }
 }

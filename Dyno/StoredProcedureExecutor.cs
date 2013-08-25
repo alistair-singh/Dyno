@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Dynamic;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Dyno
 {
-  public class StoredProcedureExecutor : DynamicObject
+  public class StoredProcedureExecutor : ExecutorBase
   {
     private readonly StoredProcedure _sp;
     private readonly Dictionary<string, object> _args;
@@ -17,46 +17,7 @@ namespace Dyno
       _args = args;
     }
 
-    public override bool TryConvert(ConvertBinder binder, out object result)
-    {
-      if (binder.ReturnType == typeof(DataSet))
-      {
-        result = DataSet();
-        return true;
-      }
-
-      if (binder.ReturnType == typeof(SqlDataAdapter))
-      {
-        result = Adapter();
-        return true;
-      }
-
-      if (binder.ReturnType == typeof(int))
-      {
-        result = ExecuteNonQuery();
-        return true;
-      }
-
-      if (binder.ReturnType == typeof(object))
-      {
-        result = Scalar();
-        return true;
-      }
-
-      if (binder.ReturnType == typeof(Result))
-      {
-        result = new Result(this);
-        return true;
-      }
-
-      return base.TryConvert(binder, out result);
-    }
-
-    /// <summary>
-    /// This method executes the stored procedure and return a DataSet 
-    /// </summary>
-    /// <returns></returns>
-    public DataSet DataSet()
+    public override DataSet DataSet()
     {
       using (var da = Adapter())
       {
@@ -66,19 +27,19 @@ namespace Dyno
       }
     }
 
-    public SqlDataReader Reader(CommandBehavior behavior = CommandBehavior.Default)
+    public override SqlDataReader Reader(CommandBehavior behavior = CommandBehavior.Default)
     {
-      return MakeCommand().ExecuteReader(behavior);
+      return MakeCommand(_sp, _args).ExecuteReader(behavior);
     }
 
-    public SqlDataAdapter Adapter()
+    public override SqlDataAdapter Adapter()
     {
-      return new SqlDataAdapter(MakeCommand());
+      return new SqlDataAdapter(MakeCommand(_sp, _args));
     }
 
-    public T Scalar<T>()
+    public override T Scalar<T>()
     {
-      using (var command = MakeCommand())
+      using (var command = MakeCommand(_sp, _args))
       {
         var obj = command.ExecuteScalar();
         if (obj is T)
@@ -89,28 +50,15 @@ namespace Dyno
       throw new Exception("result is not of type T");
     }
 
-    public object Scalar()
+    public override object Scalar()
     {
       return Scalar<object>();
     }
 
-    public int ExecuteNonQuery()
+    public override int ExecuteNonQuery()
     {
-      using (var command = MakeCommand())
+      using (var command = MakeCommand(_sp, _args))
         return command.ExecuteNonQuery();
-    }
-
-    private SqlCommand MakeCommand()
-    {
-      var command = new SqlCommand(_sp.FullName, _sp.Schema.Db.SqlConnection)
-      {
-        CommandType = CommandType.StoredProcedure
-      };
-
-      foreach (var key in _args.Keys)
-        command.Parameters.AddWithValue(key, _args[key]);
-
-      return command;
     }
   }
 }

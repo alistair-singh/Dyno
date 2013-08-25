@@ -10,10 +10,12 @@ namespace Dyno
   {
     private readonly SqlDataReader _reader;
     private readonly string[] _columns;
+    private readonly bool _dispose;
 
-    public Set(SqlDataReader reader)
+    public Set(SqlDataReader reader, bool dispose = false)
     {
       _reader = reader;
+      _dispose = dispose;
       var schemaTable = _reader.GetSchemaTable();
       if (schemaTable != null)
         _columns = schemaTable.Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToArray();
@@ -21,7 +23,7 @@ namespace Dyno
 
     public IEnumerator<IRow> GetEnumerator()
     {
-      return new RowEnumerator(_reader);
+      return new RowEnumerator(_reader, _dispose);
     }
 
     IEnumerator IEnumerable.GetEnumerator()
